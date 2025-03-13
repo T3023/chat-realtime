@@ -1,0 +1,78 @@
+<div class="chat-room-container">
+  <h2>🗨️ <%= @chat_room.name %></h2>
+
+  <!-- Tombol Kembali ke Halaman Utama -->
+  <div class="back-to-home">
+    <%= link_to "⬅ Kembali ke Halaman Utama", chat_rooms_path, class: "btn-back" %>
+  </div>
+
+  <!-- Area Chat -->
+  <div id="messages">
+    <% @chat_room.messages.each do |message| %>
+      <p><strong><%= message.user %>:</strong> <%= message.content %></p>
+    <% end %>
+  </div>
+
+  <!-- Form Kirim Pesan -->
+  <%= form_with(model: [@chat_room, Message.new], local: true) do |form| %>
+    <div>
+      <%= form.label :content, "Pesan Anda" %>
+      <%= form.text_area :content, required: true, class: "chat-input" %>
+    </div>
+    <div>
+      <%= form.submit "Kirim Pesan", class: "btn-send" %>
+    </div>
+  <% end %>
+</div>
+
+<script type="module">
+  import chatRoomChannel from "channels/chat_room_channel";
+  const chatRoomId = <%= @chat_room.id %>;
+  chatRoomChannel(chatRoomId);
+</script>
+
+<style>
+  .chat-room-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f9f9f9;
+  }
+
+  .btn-back {
+    display: inline-block;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .btn-send {
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .chat-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  #messages {
+    margin-top: 20px;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    height: 300px;
+    overflow-y: scroll;
+  }
+</style>

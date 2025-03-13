@@ -1,0 +1,26 @@
+<!-- app/views/chat_rooms/new.html.erb -->
+<h1>Buat Chat Room Baru</h1>
+
+<%= form_with model: @chat_room, local: true do |form| %>
+  <% if @chat_room.errors.any? %>
+    <div>
+      <h2>Terjadi kesalahan</h2>
+      <ul>
+        <% @chat_room.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, "Nama Chat Room" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.submit "Buat Chat Room" %>
+  </div>
+<% end %>
+
+<%= link_to 'Kembali ke Daftar Chat Rooms', chat_rooms_path %>

@@ -1,0 +1,39 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+
+development:
+  <<: *default
+  database: chat_realtime_development
+  username: chat_realtime
+  password: your_password  # Ganti dengan password PostgreSQL Anda
+
+test:
+  <<: *default
+  database: chat_realtime_test
+  username: chat_realtime
+  password: your_password  # Ganti dengan password PostgreSQL Anda
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: chat_realtime_production
+    username: chat_realtime
+    password: <%= ENV["CHAT_REALTIME_DATABASE_PASSWORD"] %>  # Gunakan variabel lingkungan untuk keamanan
+
+  cache:
+    <<: *primary_production
+    database: chat_realtime_production_cache
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *primary_production
+    database: chat_realtime_production_queue
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *primary_production
+    database: chat_realtime_production_cable
+    migrations_paths: db/cable_migrate

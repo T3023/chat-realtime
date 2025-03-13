@@ -1,0 +1,38 @@
+<div class="chat-container">
+  <h1>📢 Daftar Chatrooms</h1>
+
+  <% if cookies[:username].blank? %>
+    <h2>🆕 Masukkan Nama Anda</h2>
+    <%= form_with url: set_username_chat_rooms_path, method: :post, local: true do %>
+      <label for="username">Nama Anda:</label>
+      <input type="text" name="username" id="username" class="chat-input" required>
+      <button type="submit">Simpan Nama</button>
+    <% end %>
+  <% else %>
+    <p><strong>Nama Anda:</strong> <%= cookies[:username] %></p>
+
+    <div class="chat-room-list">
+      <% @chat_rooms.each do |chat_room| %>
+        <div class="chat-room-item">
+          <span>💬</span>
+          <%= link_to chat_room.name, chat_room_path(chat_room), class: "chat-room-link" %>
+        </div>
+      <% end %>
+    </div>
+
+    <hr>
+
+    <div class="create-chat-room">
+      <h2>🆕 Buat Chatroom Baru</h2>
+      <%= form_with model: ChatRoom.new, local: true do |form| %>
+        <div>
+          <%= form.label :name, "Nama Chatroom" %>
+          <%= form.text_field :name, required: true, class: "chat-input" %>
+        </div>
+        <div>
+          <%= form.submit "Buat Chatroom", class: "btn-create" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
